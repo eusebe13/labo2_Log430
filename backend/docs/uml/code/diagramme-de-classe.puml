@@ -1,0 +1,42 @@
+@startuml class-pos
+
+class Produit {
+  - id: int
+  - nom: string
+  - categorie: string
+  - prix: float
+  - stock: int
+  + mettreAJourStock(qte: int): void
+}
+
+class Vente {
+  - id: int
+  - date: datetime
+  - total: float
+  + calculerTotal(): float
+}
+
+class LigneVente {
+  - quantite: int
+  - sousTotal: float
+  + calculerSousTotal(): float
+}
+
+class Retour {
+  - id: int
+  - date: datetime
+  - venteId: int
+}
+
+class Employe {
+  - id: int
+  - nom: string
+  + enregistrerVente(): Vente
+}
+
+Produit "1" <-- "1..*" LigneVente
+Vente "1" --> "1..*" LigneVente
+Vente "1" <-- "0..1" Retour
+Employe "1" --> "0..*" Vente
+
+@enduml

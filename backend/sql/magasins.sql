@@ -1,5 +1,0 @@
-CREATE TABLE magasins (
-    id SERIAL PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL,
-    region VARCHAR(100) NOT NULL
-);
