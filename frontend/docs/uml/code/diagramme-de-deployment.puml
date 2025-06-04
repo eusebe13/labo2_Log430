@@ -1,0 +1,13 @@
+@startuml deployment-pos
+
+node "Machine Virtuelle" {
+  node "Application Console" {
+    component "Client POS (Python/CLI)"
+  }
+
+  database "Base de données locale\n(SQLite ou PostgreSQL)" as DB
+}
+
+"Client POS (Python/CLI)" --> DB : accès direct via ORM
+
+@enduml
