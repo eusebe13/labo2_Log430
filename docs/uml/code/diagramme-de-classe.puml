@@ -1,0 +1,65 @@
+@startuml
+
+' ======== Modèle ========
+package "Modèle" {
+    class Magasin {
+        +id: int
+        +nom: string
+        +region: string
+        +ventes: List<Vente>
+    }
+
+    class Vente {
+        +id: int
+        +date: datetime
+        +produit: Produit
+        +quantite: int
+        +prix_total: float
+    }
+
+    class Produit {
+        +id: int
+        +nom: string
+        +categorie: string
+        +prix_unitaire: float
+    }
+
+    class RapportTendance {
+        +region: string
+        +periode: string
+        +produitsPopulaires: List<Produit>
+        +totalVentes: float
+        +croissanceHebdo: float
+    }
+
+    class AnalyseurTendance {
+        +analyserParRegion(region: string): RapportTendance
+        +analyserGlobale(): RapportTendance
+    }
+
+    Magasin "1" --> "*" Vente
+    Vente "1" --> "1" Produit
+    AnalyseurTendance "1" --> "*" Vente
+    AnalyseurTendance "1" o-- "*" Magasin
+    AnalyseurTendance "1" --> "*" RapportTendance
+}
+
+' ======== Contrôleur ========
+package "Contrôleur" {
+    class ControleurAnalyseTendance {
+        +afficherRapport(region: string): void
+    }
+
+    ControleurAnalyseTendance --> AnalyseurTendance
+}
+
+' ======== Vue ========
+package "Vue" {
+    class VueRapportTendance {
+        +afficher(rapport: RapportTendance): void
+    }
+
+    ControleurAnalyseTendance --> VueRapportTendance
+}
+
+@enduml
