@@ -1,5 +1,5 @@
 from database import SessionLocal
-from models import Product, Sale
+from models import Product, Vente
 
 
 def list_products():
@@ -16,7 +16,7 @@ def register_sale(product_ids):
         if product and product.stock > 0:
             product.stock -= 1
             total += product.price
-    sale = Sale(total=total)
+    sale = Vente(total=total)
     session.add(sale)
     session.commit()
     session.close()

@@ -37,11 +37,55 @@ package "Modèle" {
         +analyserGlobale(): RapportTendance
     }
 
+    class StockCentral {
+        +produits: List<Produit>
+        +verifierStock(idProduit: int): int
+    }
+
+    class Reapprovisionnement {
+        +produit: Produit
+        +quantite: int
+        +magasin: Magasin
+        +statut: string
+    }
+
+    class AlerteRupture {
+        +produit: Produit
+        +niveauStock: int
+        +declencherAlerte(): void
+    }
+
+    class CentreLogistique {
+        +traiterReapprovisionnement(demande: Reapprovisionnement): void
+    }
+
+    class MaisonMere {
+        +mettreAJourProduits(): void
+        +recevoirAlertes(): void
+        +genererRapport(): RapportTendance
+    }
+
+    class InterfaceWeb {
+        +afficherTableauBord(): void
+    }
+
     Magasin "1" --> "*" Vente
     Vente "1" --> "1" Produit
     AnalyseurTendance "1" --> "*" Vente
     AnalyseurTendance "1" o-- "*" Magasin
     AnalyseurTendance "1" --> "*" RapportTendance
+
+    Magasin --> Reapprovisionnement
+    Magasin --> InterfaceWeb
+    StockCentral "1" --> "*" Produit
+    StockCentral --> Reapprovisionnement
+    Reapprovisionnement --> Produit
+    Reapprovisionnement --> CentreLogistique
+    AlerteRupture --> Produit
+    MaisonMere --> Produit
+    MaisonMere --> RapportTendance
+    MaisonMere --> AlerteRupture
+    MaisonMere --> InterfaceWeb
 }
 
 ' ======== Contrôleur ========

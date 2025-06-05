@@ -1,15 +1,24 @@
 @startuml usecase-pos
 
-actor Employe
+actor Gestionnaire as "Gestionnaire de maison mère"
+actor Employe as "Employé de magasin"
+actor Responsable as "Responsable logistique"
+actor App as "Application" 
 
-usecase "Rechercher un produit" as UC1
-usecase "Enregistrer une vente" as UC2
-usecase "Gérer un retour" as UC3
-usecase "Consulter l'état du stock" as UC4
+usecase "Générer un rapport consolidé des ventes" as UC1
+usecase "Consulter le stock central et déclencher un réapprovisionnement" as UC2
+usecase "Visualiser les performances des magasins dans un tableau de bord" as UC3
+usecase "Mettre à jour les produits depuis la maison mère" as UC4
+usecase "Approvisionner un magasin depuis le centre logistique" as UC6
+usecase "Alerter automatiquement la maison mère en cas de rupture critique" as UC7
+usecase "Offrir une interface web minimale pour les gestionnaires" as UC8
 
-Employe --> UC1
+Gestionnaire --> UC1
 Employe --> UC2
-Employe --> UC3
-Employe --> UC4
+Gestionnaire --> UC3
+Responsable --> UC4
+Responsable --> UC6
+App --> UC7
+App --> UC8
 
 @enduml
