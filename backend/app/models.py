@@ -19,6 +19,7 @@ class Utilisateur(Base):
     id = Column(Integer, primary_key=True)
     nom = Column(String, nullable=False)
     role = Column(Enum(RoleEnum), nullable=False)
+    mot_de_passe = Column(String, nullable=False) # Mot de passe haché
     magasin_id = Column(Integer, ForeignKey('magasins.id'), nullable=True)
     is_maison_mere = Column(Boolean, default=False)
 
@@ -79,8 +80,8 @@ class AlerteRupture(Base):
     id = Column(Integer, primary_key=True)
     niveau_stock = Column(Integer, nullable=False)
     date_alerte = Column(DateTime, default=datetime.datetime.utcnow)
-
     produit_id = Column(Integer, ForeignKey('products.id'))
+    
     produit = relationship("Product", back_populates="alertes")
 
 class RapportTendance(Base):

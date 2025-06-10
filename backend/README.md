@@ -113,3 +113,12 @@ test:
 	pytest
 ```
 
+connexion:
+	Nom d'utilisateur: employe1
+	Mot de passe: 1234
+	
+	Nom d'utilisateur: gestionnaire1
+	Mot de passe: admin
+	
+	Nom d'utilisateur: responsable1
+	Mot de passe: root

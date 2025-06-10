@@ -1,6 +1,12 @@
 from database import SessionLocal
 from models import RapportTendance, Product
 
+def afficher_rapports():
+    session = SessionLocal()
+    rapports = session.query(RapportTendance).all()
+    session.close()
+    return rapports
+
 def generer_rapport(region=None):
     session = SessionLocal()
     if region:

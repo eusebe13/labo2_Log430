@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 
 from app.database import SessionLocal
 from app.models import Base  #, Sale
-from backend.app.initialiser_test import (
+from backend.app.initialiser_items import (
     check_stock,
     initialize_products,
     list_products,
