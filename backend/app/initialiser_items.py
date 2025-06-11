@@ -1,5 +1,5 @@
-from database import SessionLocal
-from models import Product, Utilisateur, Magasin, RoleEnum, RapportTendance, Reapprovisionnement
+from app.database import SessionLocal
+from app.models import Product, Utilisateur, Magasin, RoleEnum, RapportTendance, Reapprovisionnement
 
 
 def init_products():

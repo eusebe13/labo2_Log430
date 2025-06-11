@@ -1,5 +1,5 @@
-from database import SessionLocal
-from models import Product, Reapprovisionnement
+from app.database import SessionLocal
+from app.models import Product, Reapprovisionnement
 
 def consulter_stock():
     session = SessionLocal()

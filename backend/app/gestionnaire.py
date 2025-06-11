@@ -1,5 +1,5 @@
-from database import SessionLocal
-from models import RapportTendance, Product
+from app.database import SessionLocal
+from app.models import RapportTendance, Product
 
 def afficher_rapports():
     session = SessionLocal()

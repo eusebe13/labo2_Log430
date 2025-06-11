@@ -122,3 +122,9 @@ connexion:
 	
 	Nom d'utilisateur: responsable1
 	Mot de passe: root
+
+	Swagger UI est disponible ici :
+	http://127.0.0.1:8000/docs
+
+	Et ReDoc ici :
+	http://127.0.0.1:8000/redoc

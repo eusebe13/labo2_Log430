@@ -1,6 +1,6 @@
-from employe import consulter_product, acheter_product, verifier_stock
-from gestionnaire import generer_rapport, mettre_a_jour_produit, afficher_rapports
-from responsable import consulter_stock, reapprovisionner
+from app.employe import consulter_product, acheter_product, verifier_stock
+from app.gestionnaire import generer_rapport, mettre_a_jour_produit, afficher_rapports
+from app.responsable import consulter_stock, reapprovisionner
 
 def menu_employe():
     while True:
