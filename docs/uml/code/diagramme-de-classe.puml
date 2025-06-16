@@ -2,6 +2,24 @@
 
 ' ======== Modèle ========
 package "Modèle" {
+
+    class Utilisateur {
+        +id: int
+        +nom: string
+        +role: RoleEnum
+    }
+
+    enum RoleEnum {
+        Employe
+        Gestionnaire
+        Responsable
+    }
+
+    class AuthService {
+        +login(nom: string, mdp: string): bool
+        +logout(): void
+    }
+
     class Magasin {
         +id: int
         +nom: string
@@ -26,11 +44,8 @@ package "Modèle" {
 
     class RapportTendance {
         +region: string
-        +periode: string
         +produitsPopulaires: List<Produit>
-        +totalVentes: float
-        +croissanceHebdo: float
-    }
+        +totalVentes: float    }
 
     class AnalyseurTendance {
         +analyserParRegion(region: string): RapportTendance
@@ -40,13 +55,13 @@ package "Modèle" {
     class StockCentral {
         +produits: List<Produit>
         +verifierStock(idProduit: int): int
+        +demanderReapprovisionnement(p: Produit, magasin: Magasin): Reapprovisionnement
     }
 
     class Reapprovisionnement {
         +produit: Produit
         +quantite: int
         +magasin: Magasin
-        +statut: string
     }
 
     class AlerteRupture {
@@ -59,9 +74,15 @@ package "Modèle" {
         +traiterReapprovisionnement(demande: Reapprovisionnement): void
     }
 
-    class MaisonMere {
+    class GestionnaireProduits {
         +mettreAJourProduits(): void
+    }
+
+    class SystemeAlertes {
         +recevoirAlertes(): void
+    }
+
+    class SystemeRapports {
         +genererRapport(): RapportTendance
     }
 
@@ -69,23 +90,26 @@ package "Modèle" {
         +afficherTableauBord(): void
     }
 
+    ' Associations
     Magasin "1" --> "*" Vente
-    Vente "1" --> "1" Produit
-    AnalyseurTendance "1" --> "*" Vente
-    AnalyseurTendance "1" o-- "*" Magasin
-    AnalyseurTendance "1" --> "*" RapportTendance
+    Vente --> Produit
+    AnalyseurTendance --> Vente
+    AnalyseurTendance o-- Magasin
+    AnalyseurTendance --> RapportTendance
 
     Magasin --> Reapprovisionnement
     Magasin --> InterfaceWeb
-    StockCentral "1" --> "*" Produit
+    StockCentral --> Produit
     StockCentral --> Reapprovisionnement
     Reapprovisionnement --> Produit
     Reapprovisionnement --> CentreLogistique
     AlerteRupture --> Produit
-    MaisonMere --> Produit
-    MaisonMere --> RapportTendance
-    MaisonMere --> AlerteRupture
-    MaisonMere --> InterfaceWeb
+    SystemeRapports --> RapportTendance
+    SystemeAlertes --> AlerteRupture
+    GestionnaireProduits --> Produit
+    InterfaceWeb --> RapportTendance
+    Utilisateur --> AuthService
+    Utilisateur --> InterfaceWeb
 }
 
 ' ======== Contrôleur ========

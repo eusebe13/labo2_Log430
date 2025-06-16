@@ -77,3 +77,24 @@ def init_magasins():
         print("Magasins déjà présents.")
 
     session.close()
+
+def init_test():
+    print("=== Connexion ===")
+    nom = input("Nom d'utilisateur : ")
+    mdp = input("Mot de passe : ")
+
+    session = SessionLocal()
+    utilisateur = session.query(Utilisateur).filter_by(nom=nom, mot_de_passe=mdp).first()
+    if utilisateur:
+        print(f"Bienvenue {utilisateur.nom} ({utilisateur.role.value})")
+        if utilisateur.role == RoleEnum.employe:
+            menu_employe()
+        elif utilisateur.role == RoleEnum.gestionnaire:
+            menu_gestionnaire()
+        elif utilisateur.role == RoleEnum.responsable:
+            menu_responsable()
+        else:
+            print("Rôle non reconnu.")
+    else:
+        print("Nom ou mot de passe incorrect.")
+    session.close()

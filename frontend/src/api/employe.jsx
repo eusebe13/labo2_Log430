@@ -5,7 +5,7 @@ const BASE_URL = 'http://localhost:8000';
 export const consulterProduits = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/produits`);
-    return response;
+    return await response.json();
   } catch (error) {
     console.error("Erreur lors de la récupération des produits :", error);
     return [];

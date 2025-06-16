@@ -2,11 +2,30 @@ import { useState } from 'react';
 import { consulterProduits, acheterProduits, verifierStock } from '../api/employe';
 
 const Employe = () => {
-  const [output, setOutput] = useState('');
+  const [output, setOutput] = useState('Testez les fonctionnalités ci-dessous');
 
   const afficher = async () => {
-    const produits = await consulterProduits();
-    setOutput(produits.map(p => `${p.id} - ${p.name} (${p.category}) : ${p.price}$, Stock: ${p.stock}`).join('\n'));
+    try {
+      const response = await fetch("http://localhost:8000/produits");
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+      }
+  
+      const produits = await response.json();
+  
+      if (produits.length > 0) {
+        setOutput(
+          produits
+            .map(p => `${p.id} - ${p.name} (${p.category}) : ${p.price}$, Stock: ${p.stock}`)
+            .join('\n')
+        );
+      } else {
+        setOutput("Aucun produit disponible.");
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'appel à l'API:", error);
+      setOutput("Erreur lors de la récupération des produits.");
+    }
   };
 
   const acheter = async () => {
