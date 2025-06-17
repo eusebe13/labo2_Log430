@@ -1,10 +1,12 @@
 # app/router.py
+from typing import List, Optional
+
 from fastapi import APIRouter, HTTPException
-from app.employe import consulter_product, acheter_product, verifier_stock
+
+from app.employe import acheter_product, consulter_product, verifier_stock
 from app.gestionnaire import afficher_rapports, generer_rapport, mettre_a_jour_produit
 from app.responsable import consulter_stock, reapprovisionner
-from app.schemas import ProductSchema, RapportSchema, UpdateProductSchema, ReapprovisionnementSchema
-from typing import List, Optional
+from app.schemas import ProductSchema, RapportSchema, ReapprovisionnementSchema, UpdateProductSchema
 
 router = APIRouter()
 

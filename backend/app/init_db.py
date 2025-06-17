@@ -5,8 +5,9 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from app.database import engine
+from app.initialiser_items import init_magasins, init_products, init_users
 from app.models import Base
-from app.initialiser_items import init_products, init_users, init_magasins, init_test
+
 
 def init_db():
     print("Création des tables...")

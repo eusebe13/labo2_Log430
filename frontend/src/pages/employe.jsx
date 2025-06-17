@@ -6,7 +6,7 @@ const Employe = () => {
 
   const afficher = async () => {
     try {
-      const response = await fetch("http://localhost:8000/produits");
+      const response = consulterProduits() // await fetch("http://localhost:8000/produits");
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
       }

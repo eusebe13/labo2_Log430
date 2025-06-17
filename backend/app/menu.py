@@ -1,6 +1,7 @@
-from app.employe import consulter_product, acheter_product, verifier_stock
-from app.gestionnaire import generer_rapport, mettre_a_jour_produit, afficher_rapports
-from app.responsable import consulter_stock, reapprovisionner
+from employe import acheter_product, consulter_product, verifier_stock
+from gestionnaire import afficher_rapports, generer_rapport, mettre_a_jour_produit
+from responsable import consulter_stock, reapprovisionner
+
 
 def menu_employe():
     while True:
@@ -51,8 +52,9 @@ def menu_gestionnaire():
             val = input("Nouvelle valeur : ")
             try:
                 val = float(val) if champ in ["price"] else val
-            except:
-                pass
+            except ValueError:
+                print("Valeur invalide pour le champ numérique.")
+                continue
             succes = mettre_a_jour_produit(pid, {champ: val})
             print("Produit mis à jour." if succes else "Échec de la mise à jour.")
         elif choix == "3":

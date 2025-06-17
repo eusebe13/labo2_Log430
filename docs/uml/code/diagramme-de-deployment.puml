@@ -1,47 +1,15 @@
-@startuml
+@startuml deployment-pos
 
-node "Client Web" {
-    artifact "Navigateur\n(VueRapportTendance.html)"
+node "Navigateur Web (Client)" {
+  component "Interface utilisateur\n(Vite.js)"
 }
 
-node "Serveur d'applications\n(Maison Mère)" {
-    component "App Node.js\nExpress + MVC" {
-        [ControleurAnalyseTendance]
-        [AnalyseurTendance]
-    }
-
-    database "Base de données centrale\nPostgreSQL" as BDC
+node "Serveur Web" {
+  component "Backend POS\n(Python - FastAPI)"
+  database "Base de données\n(PostgreSQL)" as DB
 }
 
-node "Serveur de magasin A" {
-    component "App Magasin A" {
-        [Magasin A]
-        [Vente A]
-        [Produit A]
-    }
-
-    database "BD Magasin A" as BDA
-}
-
-node "Serveur de magasin B" {
-    component "App Magasin B" {
-        [Magasin B]
-        [Vente B]
-        [Produit B]
-    }
-
-    database "BD Magasin B" as BDB
-}
-
-' === Connexions réseau ===
-"Navigateur\n(VueRapportTendance.html)" --> "App Node.js\nExpress + MVC" : HTTP
-[ControleurAnalyseTendance] --> [AnalyseurTendance]
-[AnalyseurTendance] --> BDC
-
-' Synchronisation inter-magasins
-"App Magasin A" <-- [AnalyseurTendance] : API REST/HTTP
-"App Magasin B" <-- [AnalyseurTendance] : API REST/HTTP
-[Magasin A] --> BDA
-[Magasin B] --> BDB
+"Interface utilisateur\n(Vite.js)" --> "Backend POS\n(Python - FastAPI)" : HTTP/REST API
+"Backend POS\n(Python - FastAPI)" --> DB : ORM (SQLAlchemy)
 
 @enduml

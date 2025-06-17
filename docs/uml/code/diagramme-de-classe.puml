@@ -1,133 +1,54 @@
-@startuml
+@startuml class-pos
 
-' ======== Modèle ========
-package "Modèle" {
-
-    class Utilisateur {
-        +id: int
-        +nom: string
-        +role: RoleEnum
-    }
-
-    enum RoleEnum {
-        Employe
-        Gestionnaire
-        Responsable
-    }
-
-    class AuthService {
-        +login(nom: string, mdp: string): bool
-        +logout(): void
-    }
-
-    class Magasin {
-        +id: int
-        +nom: string
-        +region: string
-        +ventes: List<Vente>
-    }
-
-    class Vente {
-        +id: int
-        +date: datetime
-        +produit: Produit
-        +quantite: int
-        +prix_total: float
-    }
-
-    class Produit {
-        +id: int
-        +nom: string
-        +categorie: string
-        +prix_unitaire: float
-    }
-
-    class RapportTendance {
-        +region: string
-        +produitsPopulaires: List<Produit>
-        +totalVentes: float    }
-
-    class AnalyseurTendance {
-        +analyserParRegion(region: string): RapportTendance
-        +analyserGlobale(): RapportTendance
-    }
-
-    class StockCentral {
-        +produits: List<Produit>
-        +verifierStock(idProduit: int): int
-        +demanderReapprovisionnement(p: Produit, magasin: Magasin): Reapprovisionnement
-    }
-
-    class Reapprovisionnement {
-        +produit: Produit
-        +quantite: int
-        +magasin: Magasin
-    }
-
-    class AlerteRupture {
-        +produit: Produit
-        +niveauStock: int
-        +declencherAlerte(): void
-    }
-
-    class CentreLogistique {
-        +traiterReapprovisionnement(demande: Reapprovisionnement): void
-    }
-
-    class GestionnaireProduits {
-        +mettreAJourProduits(): void
-    }
-
-    class SystemeAlertes {
-        +recevoirAlertes(): void
-    }
-
-    class SystemeRapports {
-        +genererRapport(): RapportTendance
-    }
-
-    class InterfaceWeb {
-        +afficherTableauBord(): void
-    }
-
-    ' Associations
-    Magasin "1" --> "*" Vente
-    Vente --> Produit
-    AnalyseurTendance --> Vente
-    AnalyseurTendance o-- Magasin
-    AnalyseurTendance --> RapportTendance
-
-    Magasin --> Reapprovisionnement
-    Magasin --> InterfaceWeb
-    StockCentral --> Produit
-    StockCentral --> Reapprovisionnement
-    Reapprovisionnement --> Produit
-    Reapprovisionnement --> CentreLogistique
-    AlerteRupture --> Produit
-    SystemeRapports --> RapportTendance
-    SystemeAlertes --> AlerteRupture
-    GestionnaireProduits --> Produit
-    InterfaceWeb --> RapportTendance
-    Utilisateur --> AuthService
-    Utilisateur --> InterfaceWeb
+class Produit {
+  - id: int
+  - nom: string
+  - categorie: string
+  - prix: float
+  - stock: int
+  + mettreAJourStock(qte: int): void
 }
 
-' ======== Contrôleur ========
-package "Contrôleur" {
-    class ControleurAnalyseTendance {
-        +afficherRapport(region: string): void
-    }
-
-    ControleurAnalyseTendance --> AnalyseurTendance
+class Magasin {
+  - id: int
+  - nom: string
+  - region: string
+  + ajouterProduit(produit: Produit): void
+  + supprimerProduit(produitId: int): void
 }
 
-' ======== Vue ========
-package "Vue" {
-    class VueRapportTendance {
-        +afficher(rapport: RapportTendance): void
-    }
-
-    ControleurAnalyseTendance --> VueRapportTendance
+class Maisonmere {
+  - id: int
+  - nom: string
+  - adresse: string
+  + ajouterMagasin(magasin: Magasin): void
+  + supprimerMagasin(magasinId: int): void
 }
+
+class Utilisateur {
+  - id: int
+  - nom: string
+  - role : string
+  - motDePasse: string
+  + seConnecter(): boolean
+  + seDeconnecter(): void
+}
+
+class Vente {
+  - id: int
+  - date: datetime
+  - total: float
+  + calculerTotal(): float
+}
+
+' === Relations ===
+
+Maisonmere "1" o-- "*" Magasin : gère
+Magasin "1" o-- "*" Produit : contient
+Magasin "1" --> "*" Vente : enregistre
+Produit "1" --> "*" Vente : est_vendu
+Utilisateur "*" --> "1" Magasin : travaille
+Utilisateur "*" --> "1" Maisonmere : travaille
+Vente "*" --> "1" Utilisateur : effectuée_par
 
 @enduml
