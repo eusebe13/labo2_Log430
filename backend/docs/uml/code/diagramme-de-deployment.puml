@@ -1,13 +1,15 @@
 @startuml deployment-pos
 
-node "Machine Virtuelle" {
-  node "Application Console" {
-    component "Client POS (Python/CLI)"
-  }
-
-  database "Base de données locale\n(SQLite ou PostgreSQL)" as DB
+node "Navigateur Web (Client)" {
+  component "Interface utilisateur\n(Vite.js)"
 }
 
-"Client POS (Python/CLI)" --> DB : accès direct via ORM
+node "Serveur Web" {
+  component "Backend POS\n(Python - FastAPI)"
+  database "Base de données\n(PostgreSQL)" as DB
+}
+
+"Interface utilisateur\n(Vite.js)" --> "Backend POS\n(Python - FastAPI)" : HTTP/REST API
+"Backend POS\n(Python - FastAPI)" --> DB : ORM (SQLAlchemy)
 
 @enduml

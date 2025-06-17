@@ -1,15 +1,32 @@
 @startuml usecase-pos
 
-actor Employe
+actor Employe as "Employé de magasin"
+actor Gestionnaire as "Gestionnaire de maison mère"
+actor Responsable as "Responsable logistique"
 
-usecase "Rechercher un produit" as UC1
-usecase "Enregistrer une vente" as UC2
-usecase "Gérer un retour" as UC3
-usecase "Consulter l'état du stock" as UC4
+package "Application POS" {
+  
+  usecase UC1 as "Consulter les produits"
+  usecase UC2 as "Vendre un produit"
+  usecase UC3 as "Vérifier le stock en magasin"
+
+  usecase UC4 as "Afficher un rapport de ventes"
+  usecase UC5 as "Générer un rapport consolidé"
+  usecase UC6 as "Mettre à jour un produit"
+
+  usecase UC7 as "Consulter le stock central"
+  usecase UC8 as "Réapprovisionner un magasin"
+}
 
 Employe --> UC1
 Employe --> UC2
 Employe --> UC3
-Employe --> UC4
+
+Gestionnaire --> UC4
+Gestionnaire --> UC5
+Gestionnaire --> UC6
+
+Responsable --> UC7
+Responsable --> UC8
 
 @enduml

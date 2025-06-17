@@ -9,6 +9,31 @@ class Produit {
   + mettreAJourStock(qte: int): void
 }
 
+class Magasin {
+  - id: int
+  - nom: string
+  - region: string
+  + ajouterProduit(produit: Produit): void
+  + supprimerProduit(produitId: int): void
+}
+
+class Maisonmere {
+  - id: int
+  - nom: string
+  - adresse: string
+  + ajouterMagasin(magasin: Magasin): void
+  + supprimerMagasin(magasinId: int): void
+}
+
+class Utilisateur {
+  - id: int
+  - nom: string
+  - role : string
+  - motDePasse: string
+  + seConnecter(): boolean
+  + seDeconnecter(): void
+}
+
 class Vente {
   - id: int
   - date: datetime
@@ -16,27 +41,14 @@ class Vente {
   + calculerTotal(): float
 }
 
-class LigneVente {
-  - quantite: int
-  - sousTotal: float
-  + calculerSousTotal(): float
-}
+' === Relations ===
 
-class Retour {
-  - id: int
-  - date: datetime
-  - venteId: int
-}
-
-class Employe {
-  - id: int
-  - nom: string
-  + enregistrerVente(): Vente
-}
-
-Produit "1" <-- "1..*" LigneVente
-Vente "1" --> "1..*" LigneVente
-Vente "1" <-- "0..1" Retour
-Employe "1" --> "0..*" Vente
+Maisonmere "1" o-- "*" Magasin : gère
+Magasin "1" o-- "*" Produit : contient
+Magasin "1" --> "*" Vente : enregistre
+Produit "1" --> "*" Vente : est_vendu
+Utilisateur "*" --> "1" Magasin : travaille
+Utilisateur "*" --> "1" Maisonmere : travaille
+Vente "*" --> "1" Utilisateur : effectuée_par
 
 @enduml

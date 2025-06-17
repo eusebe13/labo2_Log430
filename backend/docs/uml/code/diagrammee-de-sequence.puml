@@ -1,16 +1,18 @@
-@startuml sequence-enregistrer-vente
+@startuml sequence-vendre-produit
 
 actor Employe
-participant "Interface Console" as UI
-participant "Service de Vente" as Service
-database "Base de données (SQLite)" as DB
+participant "Interface Vite.js\n(Navigateur)" as Vite
+participant "Backend Python\n(FastAPI)" as Backend
+database "Base de données\n(PostgreSQL)" as DB
 
-Employe -> UI : démarrerVente()
-UI -> Service : créerVente(produits)
-Service -> DB : INSERT Vente
-Service -> DB : INSERT LigneVente
-Service -> DB : UPDATE Produit (stock - qté)
-DB --> Service : confirmation
-Service --> UI : afficherTotal()
+Employe -> Vite : Cliquer sur "Vendre un produit"
+Vite -> Backend : POST /vente { idProduit, quantite }
+
+activate Backend
+Backend -> DB : Enregistrer la vente\n(Magasin, Produit, Date, Quantité, Total)
+DB --> Backend : OK (vente enregistrée)
+Backend --> Vite : 200 OK\n{ total: float $ }
+deactivate Backend
+Vite --> Employe : "Vente enregistrée : Total =float$"
 
 @enduml
