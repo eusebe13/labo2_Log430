@@ -6,8 +6,12 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  DOCKER_IMAGE: eusebe13/lab_2_more_log430
+  DOCKER_TAG: latest
+
 jobs:
-  build-and-test:
+  test-backend:
     runs-on: ubuntu-latest
 
     services:
@@ -47,27 +51,44 @@ jobs:
           cd backend
           pytest
 
+  lint-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ruff
+        run: pip install ruff
+
       - name: Run backend linting
         run: |
           cd backend
           ruff check .
 
-      #- name: Set up Node.js
-      #  uses: actions/setup-node@v4
-      #  with:
-      #    node-version: '20'
+  build:
+    needs: [test-backend, lint-backend]  # dépend des tests et lint
+    runs-on: ubuntu-latest
 
-      #- name: Install frontend dependencies
-      #  run: |
-      #    cd frontend
-      #    npm ci
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      #- name: Build frontend
-      #  run: |
-      #    cd frontend
-      #   npm run build
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      #- name: Run frontend tests (optional)
-      #  run: |
-      #    cd frontend
-      #    npm run test  # remplace par "npm run vitest" ou autre si nécessaire
+      - name: Build Docker image
+        run: |
+          docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
+
+      - name: Push Docker image
+        run: |
+          docker push $DOCKER_IMAGE:$DOCKER_TAG

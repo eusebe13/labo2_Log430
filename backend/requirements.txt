@@ -1,4 +1,6 @@
 sqlalchemy>=1.4
 pytest
 ruff
+fastapi
+uvicorn
 
