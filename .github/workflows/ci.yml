@@ -71,24 +71,23 @@ jobs:
           cd backend
           ruff check .
 
-  build:
-    needs: [test-backend, lint-backend]  # dépend des tests et lint
+  build-and-push:
     runs-on: ubuntu-latest
-
+    needs: [test-backend, lint-backend]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Cloner le repo
+        uses: actions/checkout@v3
 
-      - name: Log in to Docker Hub
+      - name: Connexion à Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
-        run: |
-          docker build -t $DOCKER_IMAGE:TAG .
-
-      - name: Push Docker image
-        run: |
-          docker push $DOCKER_IMAGE:TAG
+      - name: Build et push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: docker.io/${{ secrets.DOCKER_USERNAME }}/lab_2_more_log430:latest_${{ secrets.DOCKER_USERNAME }}
+    
