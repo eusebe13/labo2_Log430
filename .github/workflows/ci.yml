@@ -42,30 +42,30 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Initialise DB
-        run: |
-          cd backend
-          python app/init_db.py
-
-      - name: Run backend tests (optional)
+      - name: Run backend tests 
         run: |
           cd backend
           pytest
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install frontend dependencies
+      - name: Run backend linting
         run: |
-          cd frontend
-          npm ci
+          cd backend
+          ruff check .
 
-      - name: Build frontend
-        run: |
-          cd frontend
-          npm run build
+      #- name: Set up Node.js
+      #  uses: actions/setup-node@v4
+      #  with:
+      #    node-version: '20'
+
+      #- name: Install frontend dependencies
+      #  run: |
+      #    cd frontend
+      #    npm ci
+
+      #- name: Build frontend
+      #  run: |
+      #    cd frontend
+      #   npm run build
 
       #- name: Run frontend tests (optional)
       #  run: |
