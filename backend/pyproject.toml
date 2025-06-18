@@ -16,4 +16,4 @@ extend-exclude = [
 
 # Codes de règles activées
 lint.select = ["E", "F", "W", "I"]
-lint.ignore = ["E501"]
+lint.ignore = ["E501", "F401"]
