@@ -1,5 +1,6 @@
-from database import SessionLocal
-from models import Product, Vente, Magasin
+from app.database import SessionLocal
+from app.models import Product, Vente
+
 
 def consulter_product():
     session = SessionLocal()

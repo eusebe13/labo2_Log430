@@ -3,6 +3,7 @@
 # Lancer l'initialisation de la base de données
 echo "Initialisation de la base de données..."
 cd backend || exit 1
+rm pos.db
 python app/init_db.py
 if [ $? -ne 0 ]; then
     echo "Échec de l'initialisation de la base de données."

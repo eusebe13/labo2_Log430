@@ -1,5 +1,6 @@
 import os
 import sys
+
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -8,8 +9,9 @@ from sqlalchemy.orm import sessionmaker
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from database import SessionLocal
-from models import Base, Product, Reapprovisionnement
-from responsable import consulter_stock, reapprovisionner
+from models import Base, Product
+from responsable import consulter_stock
+
 
 @pytest.fixture(scope="function", autouse=True)
 def setup_database():

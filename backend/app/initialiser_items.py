@@ -1,6 +1,6 @@
 from database import SessionLocal
 from menu import menu_employe, menu_gestionnaire, menu_responsable
-from models import Magasin, Product, RoleEnum, Utilisateur
+from models import Magasin, MagasinMaisonMere, Product, RoleEnum, Utilisateur
 
 
 def init_products():
@@ -67,10 +67,14 @@ def init_magasins():
     session = SessionLocal()
     try:
         if session.query(Magasin).count() == 0:
+            maison_mere = MagasinMaisonMere(nom="Maison Principale", adresse="123 rue principale")
+            session.add(maison_mere)
+            session.flush()  # Pour obtenir l’ID sans commit
+
             magasins = [
-                Magasin(nom="Magasin Central", region="Région A"),
-                Magasin(nom="Magasin Nord", region="Région B"),
-                Magasin(nom="Magasin Sud", region="Région C")
+                Magasin(nom="Magasin Central", region="Région A", maison_mere_id=maison_mere.id),
+                Magasin(nom="Magasin Nord", region="Région B", maison_mere_id=maison_mere.id),
+                Magasin(nom="Magasin Sud", region="Région C", maison_mere_id=maison_mere.id),
             ]
             session.add_all(magasins)
             session.commit()
@@ -79,7 +83,6 @@ def init_magasins():
             print("Magasins déjà présents.")
     finally:
         session.close()
-
 
 def init_test():
     print("=== Connexion ===")

@@ -1,22 +1,26 @@
 import os
 import sys
+
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from database import SessionLocal
-from models import Base, Product, Vente, Magasin
+from employe import acheter_product, consulter_product, verifier_stock
 from initialiser_items import init_products
-from employe import consulter_product, acheter_product, verifier_stock
+from models import Base, Magasin, Product, Vente
+
+engine = create_engine("sqlite:///:memory:", connect_args={"check_same_thread": False})
+TestingSessionLocal = sessionmaker(bind=engine)
 
 @pytest.fixture(scope="function", autouse=True)
 def setup_database():
-    engine = create_engine("sqlite:///:memory:")
-    TestingSessionLocal = sessionmaker(bind=engine)
-    SessionLocal.configure(bind=engine)
-    Base.metadata.create_all(engine)
+    Base.metadata.create_all(bind=engine)
+    db = TestingSessionLocal()
+    yield db
+    db.close()
+    Base.metadata.drop_all(bind=engine)
 
     # Créer un magasin obligatoire (id = 1)
     session = TestingSessionLocal()
@@ -36,7 +40,7 @@ def test_consulter_product():
     assert all(hasattr(p, "name") and hasattr(p, "stock") for p in produits)
 
 def test_acheter_product_single():
-    db = SessionLocal()
+    db = TestingSessionLocal()
     produit = db.query(Product).first()
     stock_initial = produit.stock
     prix = produit.price
@@ -45,7 +49,7 @@ def test_acheter_product_single():
     total = acheter_product([produit.id], magasin_id=1)
     assert total == prix
 
-    db = SessionLocal()
+    db = TestingSessionLocal()
     produit_apres = db.query(Product).get(produit.id)
     ventes = db.query(Vente).all()
     db.close()

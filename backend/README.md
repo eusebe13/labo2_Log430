@@ -45,6 +45,8 @@ pip install -r requirements.txt
 
 # Lancer l'application
 python app/main.py
+ou
+uvicorn app.main:app --reload
 ```
 
 ---

@@ -1,5 +1,6 @@
 import os
 import sys
+
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -7,22 +8,23 @@ from sqlalchemy.orm import sessionmaker
 # Import depuis app/
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from database import SessionLocal
-from models import Base, Product, Utilisateur, Magasin
-from initialiser_items import init_products, init_users, init_magasins, init_test
+from initialiser_items import init_magasins, init_products, init_users
+from models import Base, Magasin, Product, Utilisateur
+
+engine = create_engine("sqlite:///:memory:", connect_args={"check_same_thread": False})
+TestingSessionLocal = sessionmaker(bind=engine)
 
 @pytest.fixture(scope="function", autouse=True)
 def setup_database():
-    engine = create_engine("sqlite:///:memory:")
-    TestingSessionLocal = sessionmaker(bind=engine)
-    SessionLocal.configure(bind=engine)
-    Base.metadata.create_all(engine)
-    yield
+    Base.metadata.create_all(bind=engine)
+    db = TestingSessionLocal()
+    yield db
+    db.close()
     Base.metadata.drop_all(bind=engine)
 
 def test_init_products():
     init_products()
-    db = SessionLocal()
+    db = TestingSessionLocal()
     produits = db.query(Product).all()
     db.close()
     assert len(produits) == 20
@@ -30,7 +32,7 @@ def test_init_products():
 
 def test_init_users():
     init_users()
-    db = SessionLocal()
+    db = TestingSessionLocal()
     users = db.query(Utilisateur).all()
     roles = set(user.role.value for user in users)
     db.close()
@@ -39,7 +41,7 @@ def test_init_users():
 
 def test_init_magasins():
     init_magasins()
-    db = SessionLocal()
+    db = TestingSessionLocal()
     magasins = db.query(Magasin).all()
     db.close()
     assert len(magasins) >= 1

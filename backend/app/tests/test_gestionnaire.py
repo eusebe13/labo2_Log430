@@ -1,5 +1,6 @@
 import os
 import sys
+
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -8,8 +9,9 @@ from sqlalchemy.orm import sessionmaker
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from database import SessionLocal
-from models import Base, Product, RapportTendance
 from gestionnaire import afficher_rapports, generer_rapport, mettre_a_jour_produit
+from models import Base, Product, RapportTendance
+
 
 @pytest.fixture(scope="function", autouse=True)
 def setup_database():
