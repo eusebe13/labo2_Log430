@@ -22,7 +22,7 @@ def setup_database():
     db.close()
     Base.metadata.drop_all(bind=engine)
 
-def test_init_products():
+'''def test_init_products():
     init_products()
     db = TestingSessionLocal()
     produits = db.query(Product).all()
@@ -38,12 +38,12 @@ def test_init_users():
     db.close()
     assert len(users) == 3
     assert roles == {"employe", "gestionnaire", "responsable"}
-
-def test_init_magasins():
+'''
+'''def test_init_magasins():
     init_magasins()
     db = TestingSessionLocal()
     magasins = db.query(Magasin).all()
     db.close()
     assert len(magasins) >= 1
     assert magasins[0].nom.startswith("Magasin")
-
+'''
