@@ -1,19 +1,12 @@
-# labo2_Log430
-
-1. L’utilisation avec Docker.
-2. L’utilisation via un **environnement virtuel Python** (venv).
-3. Un lien avec `app/main.py` comme point d’entrée de l’application.
-4. Des instructions pratiques pour l'utilisateur.
-
----
-**Gestionnaire de ventes – Application distribuée en console**
+# labo2_Log430  
+**Évolution d'une architecture logicielle plus scalable et flexible**
 
 ---
 
 ## Modes d'exécution
 ```bash
 # S'asssurer d'etre dans le bon dossier
-~/labo1_Log430$
+~/labo2_Log430/backend$
 ```
 ### 1. Exécution avec Docker
 
@@ -42,8 +35,14 @@ source .venv/bin/activate  # Sur Windows: .venv\Scripts\activate
 pip install --upgrade pip
 pip install -r requirements.txt
 
+# Effacer la db pour eviter des problemes
+rm pos.db
+
 # Lancer l'application
-python app/main.py
+python app/init_db.py
+
+# Lancer l'API (Ne pas prendre en compte)
+uvicorn app.main:app --reload
 ```
 
 ---
@@ -59,8 +58,6 @@ pytest
 
 ## Linting (Analyse statique)
 
-
-Ce projet utilise [Ruff](https://docs.astral.sh/ruff/) pour l’analyse statique du code :
 
 ```bash
 # Vérifier le code
@@ -112,3 +109,20 @@ test:
 	pytest
 ```
 
+*** Connexion:
+	Nom d'utilisateur: employe1
+	Mot de passe: 1234
+	
+	Nom d'utilisateur: gestionnaire1
+	Mot de passe: admin
+	
+	Nom d'utilisateur: responsable1
+	Mot de passe: root
+
+---
+Lab 3 (A ne pas prendre en compte)
+	Swagger UI est disponible ici :
+	http://127.0.0.1:8000/docs
+
+	Et ReDoc ici :
+	http://127.0.0.1:8000/redoc
