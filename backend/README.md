@@ -44,7 +44,15 @@ python app/init_db.py
 # Lancer l'API (Ne pas prendre en compte)
 uvicorn app.main:app --reload
 ```
-
+*** Connexion:
+	Nom d'utilisateur: employe1
+	Mot de passe: 1234
+	
+	Nom d'utilisateur: gestionnaire1
+	Mot de passe: admin
+	
+	Nom d'utilisateur: responsable1
+	Mot de passe: root
 ---
 
 ## Lancer les tests
@@ -109,15 +117,7 @@ test:
 	pytest
 ```
 
-*** Connexion:
-	Nom d'utilisateur: employe1
-	Mot de passe: 1234
-	
-	Nom d'utilisateur: gestionnaire1
-	Mot de passe: admin
-	
-	Nom d'utilisateur: responsable1
-	Mot de passe: root
+
 
 ---
 Lab 3 (A ne pas prendre en compte)
